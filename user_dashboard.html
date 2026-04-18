@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+
+{% block title %}User Dashboard - Water Management System{% endblock %}
+
+{% block content %}
+<div class="user-dashboard">
+    <div class="dashboard-header">
+        <h2>Welcome, {{ stats.get('user_name', 'User') }}!</h2>
+        <p class="dashboard-subtitle">Your Water Management Overview</p>
+    </div>
+    
+    <div class="user-stats-grid">
+        <div class="stat-card user-card">
+            <div class="stat-icon usage-icon"> drops</div>
+            <div class="stat-content">
+                <h3>Today's Usage</h3>
+                <div class="stat-value">{{ "%.2f"|format(stats.get('today_usage', 0)) }} L</div>
+            </div>
+        </div>
+        
+        <div class="stat-card user-card">
+            <div class="stat-icon quality-icon"> check_circle</div>
+            <div class="stat-content">
+                <h3>Water Quality</h3>
+                <div class="stat-value">
+                    {% if stats.get('quality_summary', {}).get('excellent', 0) > 0 %}
+                        <span class="quality-excellent">Excellent</span>
+                    {% elif stats.get('quality_summary', {}).get('good', 0) > 0 %}
+                        <span class="quality-good">Good</span>
+                    {% else %}
+                        <span class="quality-fair">Fair</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="stat-card user-card">
+            <div class="stat-icon alert-icon"> warning</div>
+            <div class="stat-content">
+                <h3>Active Alerts</h3>
+                <div class="stat-value">{{ stats.get('active_alerts', 0) }}</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="user-actions">
+        <h3>Quick Actions</h3>
+        <div class="action-grid">
+            <a href="{{ url_for('add_usage') }}" class="action-card">
+                <div class="action-icon"> add_circle</div>
+                <h4>Record Usage</h4>
+                <p>Add new water usage record</p>
+            </a>
+            
+            <a href="{{ url_for('add_quality') }}" class="action-card">
+                <div class="action-icon"> science</div>
+                <h4>Test Quality</h4>
+                <p>Record water quality test</p>
+            </a>
+            
+            <a href="{{ url_for('water_usage') }}" class="action-card">
+                <div class="action-icon"> history</div>
+                <h4>View History</h4>
+                <p>See your usage records</p>
+            </a>
+            
+            <a href="{{ url_for('water_quality') }}" class="action-card">
+                <div class="action-icon"> water_drop</div>
+                <h4>Quality Reports</h4>
+                <p>View quality test results</p>
+            </a>
+        </div>
+    </div>
+    
+    {% if stats.get('quality_summary') %}
+    <div class="quality-summary">
+        <h3>Recent Water Quality Status</h3>
+        <div class="quality-bars">
+            {% for status, count in stats.get('quality_summary', {}).items() %}
+            <div class="quality-bar">
+                <div class="quality-label">{{ status.title() }}</div>
+                <div class="quality-progress">
+                    <div class="quality-fill quality-{{ status }}" style="width: {{ (count / stats.get('quality_summary', {}).values() | sum * 100) }}%"></div>
+                </div>
+                <div class="quality-count">{{ count }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="user-tips">
+        <h3>Tips for Water Conservation</h3>
+        <div class="tips-grid">
+            <div class="tip-card">
+                <div class="tip-icon"> eco</div>
+                <h4>Monitor Usage</h4>
+                <p>Regularly check your water consumption to identify patterns and opportunities for savings.</p>
+            </div>
+            
+            <div class="tip-card">
+                <div class="tip-icon"> schedule</div>
+                <h4>Optimal Timing</h4>
+                <p>Use water during off-peak hours to reduce costs and system strain.</p>
+            </div>
+            
+            <div class="tip-card">
+                <div class="tip-icon"> leak_detection</div>
+                <h4>Check for Leaks</h4>
+                <p>Regular maintenance helps prevent water waste and costly repairs.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.user-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.dashboard-header h2 {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-subtitle {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+.user-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.user-card {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: white;
+    transform: scale(1.05);
+}
+
+.user-card .stat-icon {
+    background: rgba(255,255,255,0.2);
+}
+
+.user-card h3 {
+    color: rgba(255,255,255,0.9);
+}
+
+.user-actions {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-bottom: 3rem;
+}
+
+.user-actions h3 {
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.action-card {
+    display: block;
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border-color: #3498db;
+}
+
+.action-icon {
+    font-size: 2.5rem;
+    color: #3498db;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.action-card h4 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.action-card p {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.user-tips {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.user-tips h3 {
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.tip-card {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 4px solid #3498db;
+}
+
+.tip-icon {
+    font-size: 2rem;
+    color: #3498db;
+    margin-bottom: 1rem;
+}
+
+.tip-card h4 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.tip-card p {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .user-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .tips-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}

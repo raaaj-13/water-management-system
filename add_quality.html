@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Add Water Quality - Water Management System{% endblock %}
+
+{% block content %}
+<div class="add-quality">
+    <h2>Record Water Quality Test</h2>
+    
+    <form method="POST" class="form-container">
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="ph_level">pH Level:</label>
+                <input type="number" id="ph_level" name="ph_level" step="0.01" min="0" max="14" required>
+                <small>Acceptable range: 6.5 - 8.5</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="turbidity">Turbidity (NTU):</label>
+                <input type="number" id="turbidity" name="turbidity" step="0.01" min="0" required>
+                <small>Acceptable range: < 5 NTU</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="chlorine">Chlorine (mg/L):</label>
+                <input type="number" id="chlorine" name="chlorine" step="0.01" min="0" required>
+                <small>Acceptable range: 0.2 - 1.0 mg/L</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="temperature">Temperature (°C):</label>
+                <input type="number" id="temperature" name="temperature" step="0.1" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="dissolved_oxygen">Dissolved Oxygen (mg/L):</label>
+                <input type="number" id="dissolved_oxygen" name="dissolved_oxygen" step="0.01" min="0" required>
+                <small>Acceptable range: > 6.5 mg/L</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="conductivity">Conductivity (µS/cm):</label>
+                <input type="number" id="conductivity" name="conductivity" step="0.1" min="0" required>
+                <small>Acceptable range: < 800 µS/cm</small>
+            </div>
+        </div>
+        
+        <div class="quality-standards">
+            <h3>Quality Standards Reference</h3>
+            <div class="standards-grid">
+                <div class="standard-card">
+                    <h4>Excellent</h4>
+                    <ul>
+                        <li>pH: 6.5 - 8.5</li>
+                        <li>Turbidity: < 5 NTU</li>
+                        <li>Chlorine: 0.2 - 1.0 mg/L</li>
+                    </ul>
+                </div>
+                <div class="standard-card">
+                    <h4>Good</h4>
+                    <ul>
+                        <li>pH: 6.0 - 9.0</li>
+                        <li>Turbidity: < 10 NTU</li>
+                        <li>Chlorine: 0.1 - 2.0 mg/L</li>
+                    </ul>
+                </div>
+                <div class="standard-card">
+                    <h4>Fair</h4>
+                    <ul>
+                        <li>pH: 5.5 - 9.5</li>
+                        <li>Turbidity: < 20 NTU</li>
+                        <li>Chlorine: < 3.0 mg/L</li>
+                    </ul>
+                </div>
+                <div class="standard-card">
+                    <h4>Poor</h4>
+                    <ul>
+                        <li>Outside acceptable ranges</li>
+                        <li>Requires immediate attention</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Record Quality Test</button>
+            <a href="{{ url_for('water_quality') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

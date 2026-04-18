@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Water Management System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <h1>Water Management System</h1>
+                </div>
+                {% if session.user_id %}
+                <ul class="nav-menu">
+                    <li><a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a></li>
+                    {% if session.role == 'admin' %}
+                    <li><a href="{{ url_for('admin_dashboard') }}" class="nav-link">Admin Panel</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('water_usage') }}" class="nav-link">Water Usage</a></li>
+                    <li><a href="{{ url_for('water_quality') }}" class="nav-link">Water Quality</a></li>
+                    <li><a href="{{ url_for('alerts') }}" class="nav-link">Alerts</a></li>
+                    {% if session.role == 'admin' %}
+                    <li><a href="{{ url_for('analytics') }}" class="nav-link">Analytics</a></li>
+                    {% endif %}
+                    <li class="nav-user">
+                        <span class="user-info">{{ session.full_name }} ({{ session.role|title }})</span>
+                        <a href="{{ url_for('logout') }}" class="nav-link logout-btn">Logout</a>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 Water Management System. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
