@@ -18,6 +18,37 @@ A comprehensive water management system built with Flask, PostgreSQL, HTML, and 
 - **Frontend**: HTML5, CSS3, Jinja2 templates
 - **Minimal Dependencies**: Only 3 Python packages required
 
+## Project Screenshots
+
+Here are some screenshots showcasing the water management system:
+
+### Dashboard Overview
+![Dashboard](photo/Screenshot%202026-04-19%20at%2012.06.45%E2%80%AFAM.png)
+
+### User Interface
+![User Interface](photo/Screenshot%202026-04-19%20at%2012.29.55%E2%80%AFAM.png)
+
+### Water Quality Monitoring
+![Water Quality](photo/Screenshot%202026-04-19%20at%2012.30.10%E2%80%AFAM.png)
+
+### Usage Analytics
+![Analytics](photo/Screenshot%202026-04-19%20at%2012.30.25%E2%80%AFAM.png)
+
+### Registration Page
+![Registration](photo/Screenshot%202026-04-19%20at%2012.31.00%20AM.png)
+
+### Admin Dashboard
+![Admin Panel](photo/Screenshot%202026-04-19%20at%2012.31.52%E2%80%AFAM.png)
+
+### Mobile View
+![Mobile Interface](photo/Screenshot%202026-04-19%20at%2012.32.08%E2%80%AFAM.png)
+
+### Reports Section
+![Reports](photo/Screenshot%202026-04-19%20at%2012.32.13%E2%80%AFAM.png)
+
+### Settings
+![Settings](photo/Screenshot%202026-04-19%20at%2012.32.24%E2%80%AFAM.png)
+
 ## Installation
 
 ### Prerequisites
