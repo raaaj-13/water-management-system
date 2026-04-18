@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Water Management System{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <h2>Water Management Dashboard</h2>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon usage-icon"> drops</div>
+            <div class="stat-content">
+                <h3>Today's Usage</h3>
+                <div class="stat-value">{{ "%.2f"|format(stats.get('today_usage', 0)) }} L</div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon location-icon"> location</div>
+            <div class="stat-content">
+                <h3>Total Locations</h3>
+                <div class="stat-value">{{ stats.get('total_locations', 0) }}</div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon alert-icon"> warning</div>
+            <div class="stat-content">
+                <h3>Active Alerts</h3>
+                <div class="stat-value">{{ stats.get('active_alerts', 0) }}</div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon quality-icon"> check_circle</div>
+            <div class="stat-content">
+                <h3>Water Quality</h3>
+                <div class="stat-value">
+                    {% if stats.get('quality_summary', {}).get('excellent', 0) > 0 %}
+                        <span class="quality-excellent">Excellent</span>
+                    {% elif stats.get('quality_summary', {}).get('good', 0) > 0 %}
+                        <span class="quality-good">Good</span>
+                    {% else %}
+                        <span class="quality-fair">Fair</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="quick-actions">
+        <h3>Quick Actions</h3>
+        <div class="action-buttons">
+            <a href="{{ url_for('add_usage') }}" class="btn btn-primary">Record Water Usage</a>
+            <a href="{{ url_for('add_quality') }}" class="btn btn-secondary">Record Water Quality</a>
+            <a href="{{ url_for('alerts') }}" class="btn btn-warning">View Alerts</a>
+            <a href="{{ url_for('analytics') }}" class="btn btn-info">View Analytics</a>
+        </div>
+    </div>
+    
+    {% if stats.get('quality_summary') %}
+    <div class="quality-summary">
+        <h3>Water Quality Summary (Last 7 Days)</h3>
+        <div class="quality-bars">
+            {% for status, count in stats.get('quality_summary', {}).items() %}
+            <div class="quality-bar">
+                <div class="quality-label">{{ status.title() }}</div>
+                <div class="quality-progress">
+                    <div class="quality-fill quality-{{ status }}" style="width: {{ (count / stats.get('quality_summary', {}).values() | sum * 100) }}%"></div>
+                </div>
+                <div class="quality-count">{{ count }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,5 +1,5 @@
 # Water Management System
-
+<<<<<<< HEAD
 A comprehensive water management system built with Flask, PostgreSQL, HTML, and CSS for monitoring water usage, quality, and analytics.
 
 ## Features
@@ -254,3 +254,4 @@ For issues and questions:
 - Consider adding database indexes for large datasets
 - Implement pagination for large record sets
 - Regular database maintenance
+>>>>>>> main

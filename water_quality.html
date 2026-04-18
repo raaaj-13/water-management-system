@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Water Quality - Water Management System{% endblock %}
+
+{% block content %}
+<div class="water-quality">
+    <div class="page-header">
+        <h2>Water Quality Records</h2>
+        <a href="{{ url_for('add_quality') }}" class="btn btn-primary">Add New Quality Test</a>
+    </div>
+    
+    <div class="quality-table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>pH Level</th>
+                    <th>Turbidity (NTU)</th>
+                    <th>Chlorine (mg/L)</th>
+                    <th>Temperature (°C)</th>
+                    <th>DO (mg/L)</th>
+                    <th>Conductivity (µS/cm)</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in quality_data %}
+                <tr>
+                    <td>{{ record[1].strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>{{ record[2] }}</td>
+                    <td class="ph-value">{{ "%.2f"|format(record[3]) }}</td>
+                    <td>{{ "%.2f"|format(record[4]) }}</td>
+                    <td>{{ "%.2f"|format(record[5]) }}</td>
+                    <td>{{ "%.1f"|format(record[6]) }}</td>
+                    <td>{{ "%.2f"|format(record[7]) }}</td>
+                    <td>{{ "%.1f"|format(record[8]) }}</td>
+                    <td>
+                        <span class="quality-badge quality-{{ record[9] }}">
+                            {{ record[9].title() }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% if not quality_data %}
+        <div class="no-data">
+            <p>No water quality records found. <a href="{{ url_for('add_quality') }}">Add your first quality test</a>.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

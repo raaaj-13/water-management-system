@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Add Water Usage - Water Management System{% endblock %}
+
+{% block content %}
+<div class="add-usage">
+    <h2>Record Water Usage</h2>
+    
+    <form method="POST" class="form-container">
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="usage_liters">Usage Amount (Liters):</label>
+                <input type="number" id="usage_liters" name="usage_liters" step="0.01" min="0" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="source">Water Source:</label>
+                <select id="source" name="source" required>
+                    <option value="">Select Source</option>
+                    <option value="municipal">Municipal</option>
+                    <option value="well">Well</option>
+                    <option value="rainwater">Rainwater</option>
+                    <option value="recycled">Recycled</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="purpose">Purpose:</label>
+                <select id="purpose" name="purpose" required>
+                    <option value="">Select Purpose</option>
+                    <option value="domestic">Domestic</option>
+                    <option value="agricultural">Agricultural</option>
+                    <option value="industrial">Industrial</option>
+                    <option value="commercial">Commercial</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="cost">Cost ($):</label>
+                <input type="number" id="cost" name="cost" step="0.01" min="0" value="0">
+            </div>
+            
+            <div class="form-group full-width">
+                <label for="notes">Notes:</label>
+                <textarea id="notes" name="notes" rows="3" placeholder="Optional notes about this usage..."></textarea>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Record Usage</button>
+            <a href="{{ url_for('water_usage') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

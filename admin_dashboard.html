@@ -1,0 +1,291 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Water Management System{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <div class="dashboard-header">
+        <h2>Admin Dashboard</h2>
+        <p class="dashboard-subtitle">System Overview & Management</p>
+    </div>
+    
+    <div class="admin-stats-grid">
+        <div class="stat-card admin-card">
+            <div class="stat-icon usage-icon"> drops</div>
+            <div class="stat-content">
+                <h3>Today's Usage</h3>
+                <div class="stat-value">{{ "%.2f"|format(stats.get('today_usage', 0)) }} L</div>
+            </div>
+        </div>
+        
+        <div class="stat-card admin-card">
+            <div class="stat-icon location-icon"> location</div>
+            <div class="stat-content">
+                <h3>Total Locations</h3>
+                <div class="stat-value">{{ stats.get('total_locations', 0) }}</div>
+            </div>
+        </div>
+        
+        <div class="stat-card admin-card">
+            <div class="stat-icon alert-icon"> warning</div>
+            <div class="stat-content">
+                <h3>Active Alerts</h3>
+                <div class="stat-value">{{ stats.get('active_alerts', 0) }}</div>
+            </div>
+        </div>
+        
+        <div class="stat-card admin-card">
+            <div class="stat-icon user-icon"> people</div>
+            <div class="stat-content">
+                <h3>Total Users</h3>
+                <div class="stat-value">{{ stats.get('total_users', 0) }}</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="admin-actions">
+        <h3>System Management</h3>
+        <div class="action-grid">
+            <a href="{{ url_for('water_usage') }}" class="action-card">
+                <div class="action-icon"> water_drop</div>
+                <h4>Water Usage</h4>
+                <p>View and manage water consumption records</p>
+            </a>
+            
+            <a href="{{ url_for('water_quality') }}" class="action-card">
+                <div class="action-icon"> science</div>
+                <h4>Water Quality</h4>
+                <p>Monitor water quality parameters</p>
+            </a>
+            
+            <a href="{{ url_for('alerts') }}" class="action-card">
+                <div class="action-icon"> notifications</div>
+                <h4>System Alerts</h4>
+                <p>View and resolve system alerts</p>
+            </a>
+            
+            <a href="{{ url_for('analytics') }}" class="action-card">
+                <div class="action-icon"> analytics</div>
+                <h4>Analytics</h4>
+                <p>View system analytics and reports</p>
+            </a>
+        </div>
+    </div>
+    
+    {% if stats.get('quality_summary') %}
+    <div class="quality-summary">
+        <h3>Water Quality Status (Last 7 Days)</h3>
+        <div class="quality-bars">
+            {% for status, count in stats.get('quality_summary', {}).items() %}
+            <div class="quality-bar">
+                <div class="quality-label">{{ status.title() }}</div>
+                <div class="quality-progress">
+                    <div class="quality-fill quality-{{ status }}" style="width: {{ (count / stats.get('quality_summary', {}).values() | sum * 100) }}%"></div>
+                </div>
+                <div class="quality-count">{{ count }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="admin-quick-stats">
+        <h3>System Health</h3>
+        <div class="health-grid">
+            <div class="health-item">
+                <div class="health-indicator good"></div>
+                <div class="health-info">
+                    <h4>Database Status</h4>
+                    <p>Connected and operational</p>
+                </div>
+            </div>
+            
+            <div class="health-item">
+                <div class="health-indicator good"></div>
+                <div class="health-info">
+                    <h4>System Performance</h4>
+                    <p>All systems running normally</p>
+                </div>
+            </div>
+            
+            <div class="health-item">
+                {% if stats.get('active_alerts', 0) > 0 %}
+                <div class="health-indicator warning"></div>
+                {% else %}
+                <div class="health-indicator good"></div>
+                {% endif %}
+                <div class="health-info">
+                    <h4>Alert Status</h4>
+                    <p>{% if stats.get('active_alerts', 0) > 0 %}{{ stats.get('active_alerts', 0) }} active alerts{% else %}No active alerts{% endif %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.admin-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.dashboard-header h2 {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-subtitle {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+.admin-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.admin-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    transform: scale(1.05);
+}
+
+.admin-card .stat-icon {
+    background: rgba(255,255,255,0.2);
+}
+
+.admin-card h3 {
+    color: rgba(255,255,255,0.9);
+}
+
+.admin-actions {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-bottom: 3rem;
+}
+
+.admin-actions h3 {
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.action-card {
+    display: block;
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border-color: #3498db;
+}
+
+.action-icon {
+    font-size: 2.5rem;
+    color: #3498db;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.action-card h4 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.action-card p {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.admin-quick-stats {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.admin-quick-stats h3 {
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+}
+
+.health-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.health-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.health-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.health-indicator.good {
+    background: #27ae60;
+    box-shadow: 0 0 10px rgba(39, 174, 96, 0.3);
+}
+
+.health-indicator.warning {
+    background: #f39c12;
+    box-shadow: 0 0 10px rgba(243, 156, 18, 0.3);
+}
+
+.health-indicator.error {
+    background: #e74c3c;
+    box-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
+}
+
+.health-info h4 {
+    color: #2c3e50;
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+}
+
+.health-info p {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.user-icon {
+    background: #9b59b6;
+}
+</style>
+{% endblock %}
