@@ -15,7 +15,7 @@ A comprehensive water management system built with Flask, PostgreSQL, HTML, and 
 
 - **Backend**: Flask (Python)
 - **Database**: PostgreSQL
-- **Frontend**: HTML5, CSS3, Bootstrap 5, Jinja2 templates
+- **Frontend**: HTML5, CSS3, Bootstrap 5, JavaScript, Jinja2 templates
 - **Minimal Dependencies**: Only 3 Python packages required
 
 ## Project Screenshots
