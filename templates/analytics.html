@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics - Water Management System{% endblock %}
+
+{% block content %}
+<div class="analytics">
+    <h2>Water Management Analytics</h2>
+    
+    {% if analytics_data %}
+    <div class="analytics-grid">
+        <div class="chart-container">
+            <h3>30-Day Usage Trend</h3>
+            <div class="chart-placeholder">
+                <div class="usage-trend-chart">
+                    {% for date, usage in analytics_data.usage_trend %}
+                    <div class="trend-bar" style="height: {{ (usage / analytics_data.usage_trend | map(attribute='1') | max * 100) }}%">
+                        <div class="trend-value">{{ "%.0f"|format(usage) }}L</div>
+                        <div class="trend-date">{{ date.strftime('%m/%d') }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <h3>Usage by Water Source</h3>
+            <div class="source-chart">
+                {% for source, usage in analytics_data.usage_by_source.items() %}
+                <div class="source-item">
+                    <div class="source-label">{{ source.title() }}</div>
+                    <div class="source-bar">
+                        <div class="source-fill" style="width: {{ (usage / analytics_data.usage_by_source.values() | sum * 100) }}%"></div>
+                    </div>
+                    <div class="source-value">{{ "%.0f"|format(usage) }}L</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <h3>Usage by Purpose</h3>
+            <div class="purpose-chart">
+                {% for purpose, usage in analytics_data.usage_by_purpose.items() %}
+                <div class="purpose-item">
+                    <div class="purpose-label">{{ purpose.title() }}</div>
+                    <div class="purpose-bar">
+                        <div class="purpose-fill" style="width: {{ (usage / analytics_data.usage_by_purpose.values() | sum * 100) }}%"></div>
+                    </div>
+                    <div class="purpose-value">{{ "%.0f"|format(usage) }}L</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <h3>Water Quality Status</h3>
+            <div class="quality-chart">
+                {% for status, count in analytics_data.quality_summary.items() %}
+                <div class="quality-item">
+                    <div class="quality-indicator quality-{{ status }}"></div>
+                    <div class="quality-label">{{ status.title() }}</div>
+                    <div class="quality-count">{{ count }} tests</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="summary-stats">
+        <h3>Summary Statistics</h3>
+        <div class="stats-row">
+            <div class="summary-card">
+                <h4>Total Usage (30 days)</h4>
+                <div class="summary-value">{{ "%.0f"|format(analytics_data.usage_by_source.values() | sum) }}L</div>
+            </div>
+            <div class="summary-card">
+                <h4>Daily Average</h4>
+                <div class="summary-value">{{ "%.0f"|format(analytics_data.usage_by_source.values() | sum / 30) }}L</div>
+            </div>
+            <div class="summary-card">
+                <h4>Quality Tests</h4>
+                <div class="summary-value">{{ analytics_data.quality_summary.values() | sum }}</div>
+            </div>
+            <div class="summary-card">
+                <h4>Most Used Source</h4>
+                <div class="summary-value">{{ analytics_data.usage_by_source | dictsort(by='value', reverse=true) | first | first | title }}</div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="no-data">
+        <p>No analytics data available. Start recording water usage and quality data to see insights.</p>
+        <div class="action-links">
+            <a href="{{ url_for('add_usage') }}" class="btn btn-primary">Add Water Usage</a>
+            <a href="{{ url_for('add_quality') }}" class="btn btn-secondary">Add Water Quality</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

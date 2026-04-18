@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Alerts - Water Management System{% endblock %}
+
+{% block content %}
+<div class="alerts">
+    <div class="page-header">
+        <h2>System Alerts</h2>
+        <div class="alert-stats">
+            <span class="stat-badge active">{{ alerts_data | selectattr('6', 'equalto', False) | list | length }} Active</span>
+            <span class="stat-badge resolved">{{ alerts_data | selectattr('6', 'equalto', True) | list | length }} Resolved</span>
+        </div>
+    </div>
+    
+    <div class="alerts-container">
+        {% for alert in alerts_data %}
+        <div class="alert-card alert-{{ alert[3] }} {% if alert[6] %}resolved{% endif %}">
+            <div class="alert-header">
+                <div class="alert-type">
+                    <span class="type-badge type-{{ alert[2] }}">{{ alert[2].title() }}</span>
+                    <span class="severity-badge severity-{{ alert[3] }}">{{ alert[3].title() }}</span>
+                </div>
+                <div class="alert-date">
+                    {{ alert[1].strftime('%Y-%m-%d %H:%M') }}
+                </div>
+            </div>
+            
+            <div class="alert-content">
+                <div class="alert-message">{{ alert[4] }}</div>
+                {% if alert[5] %}
+                <div class="alert-location">Location: {{ alert[5] }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="alert-actions">
+                {% if not alert[6] %}
+                <a href="{{ url_for('resolve_alert', alert_id=alert[0]) }}" class="btn btn-sm btn-success">Resolve</a>
+                {% else %}
+                <span class="resolved-badge">Resolved {{ alert[7].strftime('%Y-%m-%d %H:%M') if alert[7] else 'Recently' }}</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        
+        {% if not alerts_data %}
+        <div class="no-data">
+            <p>No alerts found. The system is running smoothly!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

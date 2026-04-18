@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Water Usage - Water Management System{% endblock %}
+
+{% block content %}
+<div class="water-usage">
+    <div class="page-header">
+        <h2>Water Usage Records</h2>
+        <a href="{{ url_for('add_usage') }}" class="btn btn-primary">Add New Usage</a>
+    </div>
+    
+    <div class="usage-table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Usage (L)</th>
+                    <th>Source</th>
+                    <th>Purpose</th>
+                    <th>Location</th>
+                    <th>Cost ($)</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in usage_data %}
+                <tr>
+                    <td>{{ record[1].strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td class="usage-value">{{ "%.2f"|format(record[2]) }}</td>
+                    <td>
+                        <span class="source-badge source-{{ record[3] }}">
+                            {{ record[3].title() }}
+                        </span>
+                    </td>
+                    <td>{{ record[4].title() }}</td>
+                    <td>{{ record[5] }}</td>
+                    <td>${{ "%.2f"|format(record[6]) }}</td>
+                    <td>{{ record[7] or '-' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% if not usage_data %}
+        <div class="no-data">
+            <p>No water usage records found. <a href="{{ url_for('add_usage') }}">Add your first record</a>.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
