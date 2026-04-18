@@ -1,5 +1,5 @@
 # Water Management System
-<<<<<<< HEAD
+
 A comprehensive water management system built with Flask, PostgreSQL, HTML, and CSS for monitoring water usage, quality, and analytics.
 
 ## Features
@@ -254,4 +254,34 @@ For issues and questions:
 - Consider adding database indexes for large datasets
 - Implement pagination for large record sets
 - Regular database maintenance
->>>>>>> main
+
+## Project Photos
+
+Here are some photos showcasing the water management system:
+
+### System Interface
+![Water Management Dashboard](photo/WhatsApp%20Image%202026-04-19%20at%2000.16.49.jpeg)
+
+### Water Quality Monitoring
+![Water Quality Features](photo/WhatsApp%20Image%202026-04-19%20at%2000.16.49%20(1).jpeg)
+
+### Analytics Dashboard
+![Analytics View](photo/WhatsApp%20Image%202026-04-19%20at%2000.16.50.jpeg)
+
+### Usage Tracking
+![Usage Monitoring](photo/WhatsApp%20Image%202026-04-19%20at%2000.16.50%20(1).jpeg)
+
+### Alert System
+![Alert Management](photo/WhatsApp%20Image%202026-04-19%20at%2000.16.50%20(2).jpeg)
+
+### Mobile Interface
+![Mobile View](photo/WhatsApp%20Image%202026-04-19%20at%2000.16.50%20(3).jpeg)
+
+### Additional Screenshots
+![Screenshot 1](photo/WhatsApp%20Image%202026-04-19%20at%2000.16.51.jpeg)
+![Screenshot 2](photo/WhatsApp%20Image%202026-04-19%20at%2000.16.51%20(1).jpeg)
+![Screenshot 3](photo/WhatsApp%20Image%202026-04-19%20at%2000.16.51%20(2).jpeg)
+![Screenshot 4](photo/WhatsApp%20Image%202026-04-19%20at%2000.16.52.jpeg)
+![Screenshot 5](photo/WhatsApp%20Image%202026-04-19%20at%2000.16.52%20(1).jpeg)
+![Screenshot 6](photo/WhatsApp%20Image%202026-04-19%20at%2000.16.52%20(2).jpeg)
+![Screenshot 7](photo/WhatsApp%20Image%202026-04-19%20at%2000.16.52%20(3).jpeg)
